@@ -4,7 +4,6 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Media } f
 class DishDetail extends Component {
     constructor (props) {
         super(props);
-
     }
 
     renderDish(dish) {
@@ -23,9 +22,15 @@ class DishDetail extends Component {
     renderComments (comments) {
         const coms = comments.map((c) => {
             return (
-              <li>
+              <li key={c.id}>
                 <p>{c.comment}</p>
-                <p>-- {c.author}, {c.date}</p>
+                <p>-- {c.author}, {new Intl.DateTimeFormat(
+                    'en-US',
+                    {
+                        year: 'numeric',
+                        month: 'short',
+                        day: '2-digit'
+                    }).format(new Date(Date.parse(c.date)))}</p>
               </li>  
             );
         });
@@ -42,9 +47,11 @@ class DishDetail extends Component {
     render () {
         if (this.props.selectedItem != null) {
             return ( 
-                <div className="row">
-                    {this.renderDish(this.props.selectedItem)}
-                    {this.renderComments(this.props.selectedItem.comments)}
+                <div className="container">
+                    <div className="row">
+                        {this.renderDish(this.props.selectedItem)}
+                        {this.renderComments(this.props.selectedItem.comments)}
+                    </div>
                 </div>);
         } else {
             return <div></div>
